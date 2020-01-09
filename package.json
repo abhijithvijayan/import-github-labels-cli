@@ -1,0 +1,62 @@
+{
+	"name": "import-github-labels",
+	"version": "0.0.1",
+	"description": "CLI to import labels from another repository on GitHub",
+	"license": "MIT",
+	"repository": "https://github.com/abhijithvijayan/import-github-labels-cli.git",
+	"author": {
+		"name": "abhijithvijayan",
+		"email": "34790378+abhijithvijayan@users.noreply.github.com",
+		"url": "https://abhijithvijayan.in"
+	},
+	"bin": "./app/index.js",
+	"files": [
+		"/app"
+	],
+	"engines": {
+		"node": ">=8 <=12"
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"*.js": [
+			"npm run lint:fix",
+			"git add"
+		]
+	},
+	"keywords": [
+		"github",
+		"repository",
+		"lables",
+		"importer",
+		"repo",
+		"cli",
+		"cli-app"
+	],
+	"dependencies": {
+		"meow": "^6.0.0"
+	},
+	"devDependencies": {
+		"babel-eslint": "10.0.3",
+		"eslint": "^6.8.0",
+		"eslint-config-airbnb": "^18.0.1",
+		"eslint-config-onepass": "1.5.2",
+		"eslint-config-prettier": "^6.9.0",
+		"eslint-plugin-html": "^6.0.0",
+		"eslint-plugin-import": "^2.19.1",
+		"eslint-plugin-jsx-a11y": "^6.2.3",
+		"eslint-plugin-prettier": "^3.1.2",
+		"eslint-plugin-react": "^7.17.0",
+		"eslint-plugin-react-hooks": "^2.3.0",
+		"husky": "^4.0.3",
+		"lint-staged": "^9.5.0",
+		"prettier": "^1.19.1"
+	}
+}
