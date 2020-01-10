@@ -41,7 +41,11 @@
 		"cli-app"
 	],
 	"dependencies": {
-		"meow": "^6.0.0"
+		"@octokit/rest": "^16.36.0",
+		"chalk": "^3.0.0",
+		"inquirer": "^7.0.3",
+		"meow": "^6.0.0",
+		"ora": "^4.0.3"
 	},
 	"devDependencies": {
 		"babel-eslint": "10.0.3",
