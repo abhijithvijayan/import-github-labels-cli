@@ -1,8 +1,11 @@
-const cli = require('../cli');
+import { options } from '../cli';
 
-const validateArguments = _options => {
-	const { options } = cli;
+export interface CliFlags {
+	version?: boolean;
+	v?: boolean;
+}
 
+const validateArguments: any = (_options: CliFlags) => {
 	if (
 		Object.prototype.hasOwnProperty.call(_options, 'version') ||
 		Object.prototype.hasOwnProperty.call(_options, 'v')
@@ -10,7 +13,10 @@ const validateArguments = _options => {
 		options.version = _options.version || _options.v;
 	}
 
+	// for some condition throw error
+	// return new Error('This is an error');
+
 	return null;
 };
 
-module.exports = validateArguments;
+export default validateArguments;

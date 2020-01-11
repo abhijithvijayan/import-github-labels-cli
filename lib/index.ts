@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-const meow = require('meow');
-const importGitHubLabelsCLI = require('./cli');
+import * as meow from 'meow';
+import importGitHubLabelsCLI from './cli';
 
 const cli = meow(
 	`
 	Usage
-	  $ import-github-labels [input] [options]
+	  $ import-github-labels <input> [options]
 
 	Input
 		sync		Import GitHub labels from a repo to another
@@ -19,11 +19,9 @@ const cli = meow(
 `,
 	{
 		flags: {
-			input: ['sync'],
-			boolean: ['version'],
-			string: [],
-			alias: {
-				v: 'version',
+			version: {
+				type: 'boolean',
+				alias: 'v',
 			},
 		},
 	}
