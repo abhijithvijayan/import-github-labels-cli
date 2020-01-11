@@ -18,8 +18,8 @@
 	},
 	"scripts": {
 		"dist": "tsc",
-		"lint": "eslint .",
-		"lint:fix": "eslint . --fix"
+		"lint": "eslint . --ext .js,.ts",
+		"lint:fix": "eslint . --ext .js,.ts --fix"
 	},
 	"husky": {
 		"hooks": {
@@ -50,6 +50,8 @@
 	},
 	"devDependencies": {
 		"@types/node": "^13.1.6",
+		"@typescript-eslint/eslint-plugin": "^2.15.0",
+		"@typescript-eslint/parser": "^2.15.0",
 		"babel-eslint": "10.0.3",
 		"eslint": "^6.8.0",
 		"eslint-config-airbnb": "^18.0.1",
