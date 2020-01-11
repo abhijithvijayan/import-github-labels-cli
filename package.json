@@ -1,6 +1,6 @@
 {
 	"name": "import-github-labels",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "CLI to import labels from another repository on GitHub",
 	"license": "MIT",
 	"repository": "https://github.com/abhijithvijayan/import-github-labels-cli.git",
@@ -9,15 +9,17 @@
 		"email": "34790378+abhijithvijayan@users.noreply.github.com",
 		"url": "https://abhijithvijayan.in"
 	},
-	"bin": "./lib/index.js",
+	"bin": "./dist/index.js",
 	"files": [
-		"/lib"
+		"/dist"
 	],
 	"engines": {
 		"node": ">=8 <=12"
 	},
 	"scripts": {
-		"dist": "tsc",
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"tsc": "tsc",
 		"lint": "eslint . --ext .js,.ts",
 		"lint:fix": "eslint . --ext .js,.ts --fix"
 	},
@@ -63,7 +65,7 @@
 		"eslint-plugin-prettier": "^3.1.2",
 		"eslint-plugin-react": "^7.17.0",
 		"eslint-plugin-react-hooks": "^2.3.0",
-		"husky": "^4.0.3",
+		"husky": "^4.0.6",
 		"lint-staged": "^9.5.0",
 		"prettier": "^1.19.1",
 		"typescript": "^3.7.4"
