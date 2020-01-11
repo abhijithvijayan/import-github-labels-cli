@@ -19,8 +19,7 @@ class LabelsApiClient {
 		const apiOptions = {
 			owner,
 			repo,
-			// raise to 100
-			per_page: 3,
+			per_page: 100,
 		};
 
 		try {
