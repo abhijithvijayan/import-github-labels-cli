@@ -1,5 +1,7 @@
 {
-	"extends": "onepass",
+	"parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+	"extends":[ "onepass",     "plugin:@typescript-eslint/eslint-recommended"],
 	"rules": {
 		"no-console": 0,
 		"no-extend-native": 0,
@@ -12,5 +14,12 @@
 				"tabWidth": 4
 			}
 		]
-	}
+	},
+	"settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
 }

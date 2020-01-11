@@ -1,7 +1,9 @@
-const GitHubApi = require('@octokit/rest');
+import * as Octokit from '@octokit/rest';
 
 class LabelsApiClient {
-	constructor(accessToken) {
+	_apiClient: Octokit;
+
+	constructor(accessToken: string) {
 		const defaultOptions = {
 			auth: accessToken,
 			baseUrl: 'https://api.github.com',
@@ -10,36 +12,33 @@ class LabelsApiClient {
 		};
 
 		// authenticate with github
-		this._apiClient = new GitHubApi(defaultOptions);
+		this._apiClient = new Octokit(defaultOptions);
 	}
 
-	getLabels(owner, repo) {
-		const reqOptions = {
+	getLabels(owner: string, repo: string): Promise<any> {
+		const apiOptions = {
 			owner,
 			repo,
-			// raise to 100
-			per_page: 3,
+			per_page: 100,
 		};
-
-		let labels = [];
 
 		try {
 			/**
 			 *  paginate responses for the registered endpoint
 			 *  docs: https://octokit.github.io/rest.js/#pagination
 			 */
-			const options = this._apiClient.issues.listLabelsForRepo.endpoint.merge(reqOptions);
-			labels = this._apiClient.paginate(options);
+			const requestOptions = this._apiClient.issues.listLabelsForRepo.endpoint.merge(apiOptions);
+
+			return this._apiClient.paginate(requestOptions);
 		} catch (err) {
 			// GitHub API Error
+			return err;
 		}
-
-		return labels;
 	}
 }
 
-const createApiClient = accessToken => {
+const createApiClient = (accessToken: string) => {
 	return new LabelsApiClient(accessToken);
 };
 
-module.exports = createApiClient;
+export default createApiClient;
