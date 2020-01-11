@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    // Disabled because of https://github.com/Microsoft/TypeScript/issues/29172
-		// "outDir": "dist",
+    // https://github.com/Microsoft/TypeScript/issues/29172
+		"outDir": "dist",
 		"target": "es2017", // Node.js 8
 		"module": "commonjs",
 		"moduleResolution": "node",
