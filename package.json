@@ -45,6 +45,7 @@
 	],
 	"dependencies": {
 		"@octokit/rest": "^16.36.0",
+		"@types/inquirer": "^6.5.0",
 		"chalk": "^3.0.0",
 		"inquirer": "^7.0.3",
 		"meow": "^6.0.0",
