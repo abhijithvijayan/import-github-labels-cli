@@ -1,6 +1,9 @@
+import * as inquirer from 'inquirer';
+
 import githubLabelsApi from './githubLabelsApi';
-import validateArguments, { CliFlags } from './utils/validate';
 import { flashError } from './utils/flashMessages';
+import { sessionQuestions, sessionAnswersType } from './utils/questions';
+import validateArguments, { CliFlags } from './utils/validate';
 
 export interface CliOptions {
 	version?: boolean | undefined;
@@ -9,23 +12,44 @@ export interface CliOptions {
 // global object for cli validated options
 export const options: CliOptions = {};
 
-/**
- *  Handle `sync` command
- */
-const handleSyncOperations = async (): Promise<void> => {
+const syncRepositoryLabels = async ({ token, destRepo }: sessionAnswersType): Promise<null | Error> => {
 	try {
 		// create github api instance
-		const labelsApiClient = githubLabelsApi('TODO GET TOKEN FROM USER INPUT');
+		const labelsApiClient = githubLabelsApi(token);
 
 		// get all labels from source repo
-		const labels = await labelsApiClient.getLabels('USERNAME', 'REPO NAME');
+		const labels: [] = await labelsApiClient.getLabels(destRepo);
 
 		console.log(labels);
 		// TODO:
 		// iterate through all labels
 		// create label in repo
-		// read from next page (repeat prev steps)
-	} catch (err) {}
+
+		return null;
+	} catch (err) {
+		return err;
+	}
+};
+
+/**
+ *  Handle `sync` command
+ */
+const handleSyncOperations = async (): Promise<void> => {
+	// ask questions
+	const userChoices: sessionAnswersType = await inquirer.prompt(sessionQuestions);
+	const { sourceRepo, destRepo, token } = userChoices;
+
+	if (sourceRepo.split('/').length !== 2) {
+		return flashError('Error: Invalid source repository name.');
+	}
+	if (destRepo.split('/').length !== 2) {
+		return flashError('Error: Invalid destination repository name.');
+	}
+	if (token === '') {
+		return flashError('Error: Invalid GitHub token.');
+	}
+
+	await syncRepositoryLabels(userChoices);
 };
 
 // driver function

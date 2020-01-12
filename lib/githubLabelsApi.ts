@@ -15,10 +15,13 @@ class LabelsApiClient {
 		this._apiClient = new Octokit(defaultOptions);
 	}
 
-	getLabels(owner: string, repo: string): Promise<any> {
+	getLabels(repo: string): Promise<any> {
+		const accountName: string = repo.split('/')[0];
+		const repoName: string = repo.split('/')[1];
+
 		const apiOptions = {
-			owner,
-			repo,
+			owner: accountName,
+			repo: repoName,
 			per_page: 100,
 		};
 
