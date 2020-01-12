@@ -1,10 +1,11 @@
 import * as inquirer from 'inquirer';
 import { IssuesGetLabelResponse } from '@octokit/rest';
 
-import githubLabelsApi, { LabelsApiClient } from './githubLabelsApi';
+import Spinner from './utils/spinner';
 import { flashError } from './utils/flashMessages';
-import { sessionQuestions, sessionAnswersType } from './utils/questions';
 import validateArguments, { CliFlags } from './utils/validate';
+import githubLabelsApi, { LabelsApiClient } from './githubLabelsApi';
+import { sessionQuestions, sessionAnswersType } from './utils/questions';
 
 export interface CliOptions {
 	version?: boolean | undefined;
@@ -38,17 +39,24 @@ const syncLabelAction = (
 };
 
 const syncRepositoryLabels = async ({ token, sourceRepo, destRepo }: sessionAnswersType): Promise<null | Error> => {
+	console.log();
+	const fetchSpinner = new Spinner('Fetching labels from GitHub');
+
 	try {
 		// create github api instance
 		const apiClient: LabelsApiClient = githubLabelsApi(token);
 
+		fetchSpinner.start();
 		// get all labels from source repo
 		const labels = await apiClient.getLabels(sourceRepo);
 
+		fetchSpinner.succeed(`Fetched ${labels.length} labels from repository`);
+		// perform actions
 		await syncLabelAction(apiClient, labels, destRepo);
 
 		return null;
 	} catch (err) {
+		fetchSpinner.fail('Failed to fetch labels');
 		// failed to fetch labels
 		return err;
 	}
