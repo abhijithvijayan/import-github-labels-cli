@@ -38,6 +38,25 @@ class LabelsApiClient {
 			return err;
 		}
 	}
+
+	createLabel(repo: string, label: Octokit.IssuesCreateLabelResponse): Promise<any> {
+		const accountName: string = repo.split('/')[0];
+		const repoName: string = repo.split('/')[1];
+		const { name, color, description } = label;
+
+		try {
+			return this._apiClient.issues.createLabel({
+				color,
+				description,
+				name,
+				owner: accountName,
+				repo: repoName,
+			});
+		} catch (err) {
+			// GitHub API Error
+			return err;
+		}
+	}
 }
 
 const createApiClient = (accessToken: string) => {
