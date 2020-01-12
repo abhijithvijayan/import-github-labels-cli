@@ -1,6 +1,6 @@
 import * as Octokit from '@octokit/rest';
 
-class LabelsApiClient {
+export class LabelsApiClient {
 	_apiClient: Octokit;
 
 	constructor(accessToken: string) {
@@ -15,7 +15,7 @@ class LabelsApiClient {
 		this._apiClient = new Octokit(defaultOptions);
 	}
 
-	getLabels(repo: string): Promise<any> {
+	getLabels(repo: string): Promise<Octokit.IssuesGetLabelResponse[]> {
 		const accountName: string = repo.split('/')[0];
 		const repoName: string = repo.split('/')[1];
 
@@ -26,12 +26,14 @@ class LabelsApiClient {
 		};
 
 		try {
+			const requestOptions: Octokit.RequestOptions = this._apiClient.issues.listLabelsForRepo.endpoint.merge(
+				apiOptions
+			);
+
 			/**
 			 *  paginate responses for the registered endpoint
 			 *  docs: https://octokit.github.io/rest.js/#pagination
 			 */
-			const requestOptions = this._apiClient.issues.listLabelsForRepo.endpoint.merge(apiOptions);
-
 			return this._apiClient.paginate(requestOptions);
 		} catch (err) {
 			// GitHub API Error
@@ -39,7 +41,10 @@ class LabelsApiClient {
 		}
 	}
 
-	createLabel(repo: string, label: Octokit.IssuesCreateLabelResponse): Promise<any> {
+	createLabel(
+		repo: string,
+		label: Octokit.IssuesCreateLabelResponse
+	): Promise<Octokit.Response<Octokit.IssuesCreateLabelResponse>> {
 		const accountName: string = repo.split('/')[0];
 		const repoName: string = repo.split('/')[1];
 		const { name, color, description } = label;
@@ -59,7 +64,7 @@ class LabelsApiClient {
 	}
 }
 
-const createApiClient = (accessToken: string) => {
+const createApiClient = (accessToken: string): LabelsApiClient => {
 	return new LabelsApiClient(accessToken);
 };
 

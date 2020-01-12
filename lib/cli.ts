@@ -1,7 +1,7 @@
 import * as inquirer from 'inquirer';
-import { IssuesGetLabelResponse, IssuesCreateLabelResponse } from '@octokit/rest';
+import { IssuesGetLabelResponse } from '@octokit/rest';
 
-import githubLabelsApi from './githubLabelsApi';
+import githubLabelsApi, { LabelsApiClient } from './githubLabelsApi';
 import { flashError } from './utils/flashMessages';
 import { sessionQuestions, sessionAnswersType } from './utils/questions';
 import validateArguments, { CliFlags } from './utils/validate';
@@ -16,13 +16,17 @@ export const options: CliOptions = {};
 /**
  *  Iterate through labels & perform action
  */
-const syncLabelAction = (apiClient: any, labels: IssuesGetLabelResponse[], destRepo: string): Promise<boolean[]> => {
+const syncLabelAction = (
+	apiClient: LabelsApiClient,
+	labels: IssuesGetLabelResponse[],
+	destRepo: string
+): Promise<boolean[]> => {
 	return Promise.all(
 		labels.map(
 			async (label): Promise<boolean> => {
 				try {
 					// ToDo: based on choice -> create or update
-					const { data }: { data: IssuesCreateLabelResponse } = await apiClient.createLabel(destRepo, label);
+					await apiClient.createLabel(destRepo, label);
 
 					return true;
 				} catch (err) {
@@ -36,10 +40,10 @@ const syncLabelAction = (apiClient: any, labels: IssuesGetLabelResponse[], destR
 const syncRepositoryLabels = async ({ token, sourceRepo, destRepo }: sessionAnswersType): Promise<null | Error> => {
 	try {
 		// create github api instance
-		const apiClient = githubLabelsApi(token);
+		const apiClient: LabelsApiClient = githubLabelsApi(token);
 
 		// get all labels from source repo
-		const labels: IssuesGetLabelResponse[] = await apiClient.getLabels(sourceRepo);
+		const labels = await apiClient.getLabels(sourceRepo);
 
 		await syncLabelAction(apiClient, labels, destRepo);
 
