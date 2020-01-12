@@ -1,4 +1,5 @@
 import * as inquirer from 'inquirer';
+import { IssuesGetLabelResponse, IssuesCreateLabelResponse } from '@octokit/rest';
 
 import githubLabelsApi from './githubLabelsApi';
 import { flashError } from './utils/flashMessages';
@@ -12,21 +13,39 @@ export interface CliOptions {
 // global object for cli validated options
 export const options: CliOptions = {};
 
-const syncRepositoryLabels = async ({ token, destRepo }: sessionAnswersType): Promise<null | Error> => {
+/**
+ *  Iterate through labels & perform action
+ */
+const syncLabelAction = (apiClient: any, labels: IssuesGetLabelResponse[], destRepo: string): Promise<boolean[]> => {
+	return Promise.all(
+		labels.map(
+			async (label): Promise<boolean> => {
+				try {
+					// ToDo: based on choice -> create or update
+					const { data }: { data: IssuesCreateLabelResponse } = await apiClient.createLabel(destRepo, label);
+
+					return true;
+				} catch (err) {
+					return false;
+				}
+			}
+		)
+	);
+};
+
+const syncRepositoryLabels = async ({ token, sourceRepo, destRepo }: sessionAnswersType): Promise<null | Error> => {
 	try {
 		// create github api instance
-		const labelsApiClient = githubLabelsApi(token);
+		const apiClient = githubLabelsApi(token);
 
 		// get all labels from source repo
-		const labels: [] = await labelsApiClient.getLabels(destRepo);
+		const labels: IssuesGetLabelResponse[] = await apiClient.getLabels(sourceRepo);
 
-		console.log(labels);
-		// TODO:
-		// iterate through all labels
-		// create label in repo
+		await syncLabelAction(apiClient, labels, destRepo);
 
 		return null;
 	} catch (err) {
+		// failed to fetch labels
 		return err;
 	}
 };

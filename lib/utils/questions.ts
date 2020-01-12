@@ -11,12 +11,12 @@ const sessionQuestions: Question<sessionAnswersType>[] = [
 	{
 		name: 'sourceRepo',
 		type: 'input',
-		message: 'Enter your repository name (myname/myrepo):',
+		message: 'Enter repository name to sync labels from (org/repo):',
 	},
 	{
 		name: 'destRepo',
 		type: 'input',
-		message: 'Enter repository name to sync labels from (org/repo):',
+		message: 'Enter your repository name (myname/myrepo):',
 	},
 	{
 		name: 'deleteExisting',
