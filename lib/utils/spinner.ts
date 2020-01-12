@@ -3,14 +3,15 @@ import * as ora from 'ora';
 class Spinner {
 	_text: string;
 
-	_spinner: any;
+	_spinner: ora.Ora;
 
 	constructor(text: string) {
 		this._text = text;
+		this._spinner = ora(this._text);
 	}
 
 	start() {
-		this._spinner = ora(this._text).start();
+		this._spinner.start();
 	}
 
 	info(text: string) {
