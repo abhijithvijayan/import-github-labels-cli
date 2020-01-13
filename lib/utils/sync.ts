@@ -51,7 +51,7 @@ const createMissingEntry = ({ name, color, description }: IssuesGetLabelResponse
 		expected: {
 			name,
 			color,
-			description: description || '',
+			description: (description && description.trim()) || '',
 		},
 	};
 
@@ -68,12 +68,12 @@ const createUpdatableEntry = (
 		actual: {
 			name: existingEntry.name,
 			color: existingEntry.color,
-			description: existingEntry.description || '',
+			description: (existingEntry.description && existingEntry.description.trim()) || '',
 		},
 		expected: {
 			name: newEntry.name,
 			color: newEntry.color,
-			description: newEntry.description || '',
+			description: (newEntry.description && newEntry.description.trim()) || '',
 		},
 	};
 
@@ -104,8 +104,8 @@ const calcLabelDifference = (
 		const matchedLabel = matches[0];
 		resolvedLabels.push(matchedLabel);
 
-		const matchedLabelDescription = matchedLabel.description || '';
-		const newLabelDescription = newLabel.description || '';
+		const matchedLabelDescription = (matchedLabel.description && matchedLabel.description.trim()) || '';
+		const newLabelDescription = (newLabel.description && newLabel.description.trim()) || '';
 
 		// if we have a match, but properties are not equal
 		if (matchedLabel.color !== newLabel.color || matchedLabelDescription !== newLabelDescription) {
@@ -130,12 +130,15 @@ export const syncRepositoryLabels = async ({
 		const apiClient: LabelsApiClient = githubLabelsApi(token);
 
 		fetchSpinner.start();
-		// get all labels from source repo
-		const labels = await apiClient.getLabels(sourceRepo);
+		// get all labels
+		const oldLabels = await apiClient.getLabels(destRepo);
+		const newLabels = await apiClient.getLabels(sourceRepo);
 
-		fetchSpinner.succeed(`Fetched ${labels.length} labels from repository`);
+		calcLabelDifference(oldLabels, newLabels);
+
+		fetchSpinner.succeed(`Fetched ${newLabels.length} labels from repository`);
 		// perform actions
-		await syncLabelAction(apiClient, labels, destRepo);
+		await syncLabelAction(apiClient, newLabels, destRepo);
 
 		return null;
 	} catch (err) {
