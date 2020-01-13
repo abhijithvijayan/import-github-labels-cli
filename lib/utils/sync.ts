@@ -80,15 +80,31 @@ const createUpdatableEntry = (
 	return updatableEntry;
 };
 
+const createDeletableEntry = ({ name, color, description }: IssuesGetLabelResponse): diffEntryProperties => {
+	const existingEntry: diffEntryProperties = {
+		name,
+		type: 'deletable',
+		actual: {
+			name,
+			color,
+			description: (description && description.trim()) || '',
+		},
+		expected: null,
+	};
+
+	return existingEntry;
+};
+
 const calcLabelDifference = (
 	currentLabels: IssuesGetLabelResponse[],
 	newLabels: IssuesGetLabelResponse[]
 ): diffEntryProperties[] => {
 	const diff: diffEntryProperties[] = [];
-	const resolvedLabels = [];
+	const mutualLabels: IssuesGetLabelResponse[] = [];
 
+	// compare new labels to old labels
 	newLabels.forEach((newLabel: IssuesGetLabelResponse): number | void => {
-		// Get current labels which match the new labels
+		// Get current labels which match the new label
 		const matches = currentLabels.filter((currentLabel: IssuesGetLabelResponse): boolean | void => {
 			if (currentLabel.name.toLowerCase() === newLabel.name.toLowerCase()) {
 				return true;
@@ -102,7 +118,8 @@ const calcLabelDifference = (
 
 		// Always take the first match
 		const matchedLabel = matches[0];
-		resolvedLabels.push(matchedLabel);
+		// create list of mutual items
+		mutualLabels.push(matchedLabel);
 
 		const matchedLabelDescription = (matchedLabel.description && matchedLabel.description.trim()) || '';
 		const newLabelDescription = (newLabel.description && newLabel.description.trim()) || '';
@@ -112,7 +129,14 @@ const calcLabelDifference = (
 			return diff.push(createUpdatableEntry(matchedLabel, newLabel));
 		}
 	});
-	//
+
+	// find odd ones out (exists on dest repo but not on source repo)
+	const unMutualLabels: IssuesGetLabelResponse[] = currentLabels.filter((currentLabel: IssuesGetLabelResponse) => {
+		return mutualLabels.indexOf(currentLabel) === -1;
+	});
+	unMutualLabels.map((existingLabel: IssuesGetLabelResponse) => {
+		return diff.push(createDeletableEntry(existingLabel));
+	});
 
 	return diff;
 };
