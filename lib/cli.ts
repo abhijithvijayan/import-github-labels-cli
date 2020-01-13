@@ -18,19 +18,24 @@ export const options: CliOptions = {};
 const handleSyncOperations = async (): Promise<void> => {
 	// ask questions
 	const userChoices: sessionAnswersType = await inquirer.prompt(sessionQuestions);
-	const { sourceRepo, destRepo, token } = userChoices;
+	const { sourceRepo, destRepo, token, deleteExisting } = userChoices;
 
-	if (sourceRepo.split('/').length !== 2) {
+	if (sourceRepo.trim().split('/').length !== 2) {
 		return flashError('Error: Invalid source repository name.');
 	}
-	if (destRepo.split('/').length !== 2) {
+	if (destRepo.trim().split('/').length !== 2) {
 		return flashError('Error: Invalid destination repository name.');
 	}
-	if (token === '') {
+	if (token.trim() === '') {
 		return flashError('Error: Invalid GitHub token.');
 	}
 
-	await syncRepositoryLabels(userChoices);
+	await syncRepositoryLabels({
+		sourceRepo: sourceRepo.trim(),
+		destRepo: destRepo.trim(),
+		token: token.trim(),
+		deleteExisting,
+	});
 };
 
 // driver function
