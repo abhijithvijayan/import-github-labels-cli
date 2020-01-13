@@ -129,15 +129,20 @@ const calcLabelDifference = (
  */
 const syncLabelAction = (
 	apiClient: LabelsApiClient,
-	labels: IssuesGetLabelResponse[],
+	diffLabels: diffEntryProperties[],
 	destRepo: string
 ): Promise<boolean[]> => {
 	return Promise.all(
-		labels.map(
-			async (label): Promise<boolean> => {
+		diffLabels.map(
+			async (diffEntry: diffEntryProperties): Promise<boolean> => {
 				try {
-					// ToDo: based on choice -> create or update
-					await apiClient.createLabel(destRepo, label);
+					if (diffEntry.type === 'missing' && diffEntry.expected !== null) {
+						await apiClient.createLabel(destRepo, diffEntry.expected);
+					} else if (diffEntry.type === 'updatable' && diffEntry.expected !== null) {
+						await apiClient.updateLabel(destRepo, diffEntry.expected);
+					} else if (diffEntry.type === 'deletable' && diffEntry.actual !== null) {
+						await apiClient.deleteLabel(destRepo, diffEntry.actual);
+					}
 
 					return true;
 				} catch (err) {
@@ -169,7 +174,7 @@ export const syncRepositoryLabels = async ({
 
 		fetchSpinner.succeed(`Fetched ${newLabels.length} labels from repository`);
 		// perform actions
-		await syncLabelAction(apiClient, newLabels, destRepo);
+		await syncLabelAction(apiClient, labelDiff, destRepo);
 
 		return null;
 	} catch (err) {
