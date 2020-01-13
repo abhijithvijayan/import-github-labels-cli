@@ -58,11 +58,34 @@ const createMissingEntry = ({ name, color, description }: IssuesGetLabelResponse
 	return missingEntry;
 };
 
+const createUpdatableEntry = (
+	existingEntry: IssuesGetLabelResponse,
+	newEntry: IssuesGetLabelResponse
+): diffEntryProperties => {
+	const updatableEntry: diffEntryProperties = {
+		name: existingEntry.name,
+		type: 'update',
+		actual: {
+			name: existingEntry.name,
+			color: existingEntry.color,
+			description: existingEntry.description || '',
+		},
+		expected: {
+			name: newEntry.name,
+			color: newEntry.color,
+			description: newEntry.description || '',
+		},
+	};
+
+	return updatableEntry;
+};
+
 const calcLabelDifference = (
 	currentLabels: IssuesGetLabelResponse[],
 	newLabels: IssuesGetLabelResponse[]
 ): diffEntryProperties[] => {
 	const diff: diffEntryProperties[] = [];
+	const resolvedLabels = [];
 
 	newLabels.forEach((newLabel: IssuesGetLabelResponse): number | void => {
 		// Get current labels which match the new labels
@@ -70,7 +93,6 @@ const calcLabelDifference = (
 			if (currentLabel.name.toLowerCase() === newLabel.name.toLowerCase()) {
 				return true;
 			}
-			// ToDo: check for alias if present
 		});
 
 		// If we have no matches, the new label is missing
@@ -78,8 +100,19 @@ const calcLabelDifference = (
 			return diff.push(createMissingEntry(newLabel));
 		}
 
-		// ToDo: Do for we have a match, but properties are not equal
+		// Always take the first match
+		const matchedLabel = matches[0];
+		resolvedLabels.push(matchedLabel);
+
+		const matchedLabelDescription = matchedLabel.description || '';
+		const newLabelDescription = newLabel.description || '';
+
+		// if we have a match, but properties are not equal
+		if (matchedLabel.color !== newLabel.color || matchedLabelDescription !== newLabelDescription) {
+			return diff.push(createUpdatableEntry(matchedLabel, newLabel));
+		}
 	});
+	//
 
 	return diff;
 };
