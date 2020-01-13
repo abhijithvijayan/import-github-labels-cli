@@ -84,6 +84,22 @@ export class LabelsApiClient {
 			return err;
 		}
 	}
+
+	deleteLabel(repo: string, label: Octokit.IssuesGetLabelResponse): Promise<Octokit.AnyResponse> {
+		const accountName: string = repo.split('/')[0];
+		const repoName: string = repo.split('/')[1];
+		const { name } = label;
+
+		try {
+			return this._apiClient.issues.deleteLabel({
+				owner: accountName,
+				repo: repoName,
+				name,
+			});
+		} catch (err) {
+			return err;
+		}
+	}
 }
 
 const createApiClient = (accessToken: string): LabelsApiClient => {
