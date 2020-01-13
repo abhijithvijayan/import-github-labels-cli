@@ -157,6 +157,7 @@ export const syncRepositoryLabels = async ({
 	token,
 	sourceRepo,
 	destRepo,
+	deleteExisting,
 }: sessionAnswersType): Promise<null | Error> => {
 	console.log();
 	const fetchSpinner = new Spinner('Fetching labels from GitHub');
@@ -170,7 +171,17 @@ export const syncRepositoryLabels = async ({
 		const oldLabels = await apiClient.getLabels(destRepo);
 		const newLabels = await apiClient.getLabels(sourceRepo);
 
-		const labelDiff: diffEntryProperties[] = calcLabelDifference(oldLabels, newLabels);
+		// calculate the differences
+		const labelDiff: diffEntryProperties[] = calcLabelDifference(oldLabels, newLabels).filter(
+			(diff: diffEntryProperties) => {
+				// ignore deletable entries if user opted to keep them
+				if (!deleteExisting && diff.type === 'deletable') {
+					return false;
+				}
+
+				return true;
+			}
+		);
 
 		fetchSpinner.succeed(`Fetched ${newLabels.length} labels from repository`);
 		// perform actions
