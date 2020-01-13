@@ -58,7 +58,29 @@ export class LabelsApiClient {
 				repo: repoName,
 			});
 		} catch (err) {
-			// GitHub API Error
+			// creation failed
+			return err;
+		}
+	}
+
+	updateLabel(
+		repo: string,
+		label: Octokit.IssuesGetLabelResponse
+	): Promise<Octokit.Response<Octokit.IssuesUpdateLabelResponse>> {
+		const accountName: string = repo.split('/')[0];
+		const repoName: string = repo.split('/')[1];
+		const { name, color, description } = label;
+
+		try {
+			return this._apiClient.issues.updateLabel({
+				owner: accountName,
+				repo: repoName,
+				current_name: name,
+				color,
+				description,
+			});
+		} catch (err) {
+			// updation failed
 			return err;
 		}
 	}
