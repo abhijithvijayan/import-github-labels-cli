@@ -7,22 +7,14 @@ import githubLabelsApi, { LabelsApiClient } from '../githubLabelsApi';
 interface diffEntryProperties {
 	name: string;
 	type: string;
-	actual: {
-		name: string;
-		color: string;
-		description: string;
-	} | null;
-	expected: {
-		name: string;
-		color: string;
-		description: string;
-	} | null;
+	actual: IssuesGetLabelResponse | null;
+	expected: IssuesGetLabelResponse | null;
 }
 
 /**
  *  Mark label as `missing`
  */
-const createMissingEntry = ({ name, color, description }: IssuesGetLabelResponse): diffEntryProperties => {
+const createMissingEntry = ({ name, color, description, ...other }: IssuesGetLabelResponse): diffEntryProperties => {
 	const missingEntry: diffEntryProperties = {
 		name,
 		type: 'missing',
@@ -31,6 +23,7 @@ const createMissingEntry = ({ name, color, description }: IssuesGetLabelResponse
 			name,
 			color,
 			description: (description && description.trim()) || '',
+			...other,
 		},
 	};
 
@@ -44,18 +37,19 @@ const createUpdatableEntry = (
 	existingEntry: IssuesGetLabelResponse,
 	newEntry: IssuesGetLabelResponse
 ): diffEntryProperties => {
+	const { description: existingDesc, ...existing } = existingEntry;
+	const { description: newDesc, ...other } = newEntry;
+
 	const updatableEntry: diffEntryProperties = {
 		name: existingEntry.name,
 		type: 'updatable',
 		actual: {
-			name: existingEntry.name,
-			color: existingEntry.color,
-			description: (existingEntry.description && existingEntry.description.trim()) || '',
+			description: (existingDesc && existingDesc.trim()) || '',
+			...existing,
 		},
 		expected: {
-			name: newEntry.name,
-			color: newEntry.color,
-			description: (newEntry.description && newEntry.description.trim()) || '',
+			description: (newDesc && newDesc.trim()) || '',
+			...other,
 		},
 	};
 
@@ -65,7 +59,7 @@ const createUpdatableEntry = (
 /**
  *  Mark label as `deletable`
  */
-const createDeletableEntry = ({ name, color, description }: IssuesGetLabelResponse): diffEntryProperties => {
+const createDeletableEntry = ({ name, color, description, ...other }: IssuesGetLabelResponse): diffEntryProperties => {
 	const existingEntry: diffEntryProperties = {
 		name,
 		type: 'deletable',
@@ -73,6 +67,7 @@ const createDeletableEntry = ({ name, color, description }: IssuesGetLabelRespon
 			name,
 			color,
 			description: (description && description.trim()) || '',
+			...other,
 		},
 		expected: null,
 	};
