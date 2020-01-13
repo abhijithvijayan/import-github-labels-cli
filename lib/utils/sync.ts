@@ -4,6 +4,21 @@ import Spinner from './spinner';
 import { sessionAnswersType } from './questions';
 import githubLabelsApi, { LabelsApiClient } from '../githubLabelsApi';
 
+interface diffEntryProperties {
+	name: string;
+	type: string;
+	actual: {
+		name: string;
+		color: string;
+		description: string;
+	} | null;
+	expected: {
+		name: string;
+		color: string;
+		description: string;
+	} | null;
+}
+
 /**
  *  Iterate through labels & perform action
  */
@@ -26,6 +41,47 @@ const syncLabelAction = (
 			}
 		)
 	);
+};
+
+const createMissingEntry = ({ name, color, description }: IssuesGetLabelResponse): diffEntryProperties => {
+	const missingEntry: diffEntryProperties = {
+		name,
+		type: 'missing',
+		actual: null,
+		expected: {
+			name,
+			color,
+			description: description || '',
+		},
+	};
+
+	return missingEntry;
+};
+
+const calcLabelDifference = (
+	currentLabels: IssuesGetLabelResponse[],
+	newLabels: IssuesGetLabelResponse[]
+): diffEntryProperties[] => {
+	const diff: diffEntryProperties[] = [];
+
+	newLabels.forEach((newLabel: IssuesGetLabelResponse): number | void => {
+		// Get current labels which match the new labels
+		const matches = currentLabels.filter((currentLabel: IssuesGetLabelResponse): boolean | void => {
+			if (currentLabel.name.toLowerCase() === newLabel.name.toLowerCase()) {
+				return true;
+			}
+			// ToDo: check for alias if present
+		});
+
+		// If we have no matches, the new label is missing
+		if (matches.length === 0) {
+			return diff.push(createMissingEntry(newLabel));
+		}
+
+		// ToDo: Do for we have a match, but properties are not equal
+	});
+
+	return diff;
 };
 
 export const syncRepositoryLabels = async ({
