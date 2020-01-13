@@ -20,29 +20,8 @@ interface diffEntryProperties {
 }
 
 /**
- *  Iterate through labels & perform action
+ *  Mark label as `missing`
  */
-const syncLabelAction = (
-	apiClient: LabelsApiClient,
-	labels: IssuesGetLabelResponse[],
-	destRepo: string
-): Promise<boolean[]> => {
-	return Promise.all(
-		labels.map(
-			async (label): Promise<boolean> => {
-				try {
-					// ToDo: based on choice -> create or update
-					await apiClient.createLabel(destRepo, label);
-
-					return true;
-				} catch (err) {
-					return false;
-				}
-			}
-		)
-	);
-};
-
 const createMissingEntry = ({ name, color, description }: IssuesGetLabelResponse): diffEntryProperties => {
 	const missingEntry: diffEntryProperties = {
 		name,
@@ -58,13 +37,16 @@ const createMissingEntry = ({ name, color, description }: IssuesGetLabelResponse
 	return missingEntry;
 };
 
+/**
+ *  Mark label as `updatable`
+ */
 const createUpdatableEntry = (
 	existingEntry: IssuesGetLabelResponse,
 	newEntry: IssuesGetLabelResponse
 ): diffEntryProperties => {
 	const updatableEntry: diffEntryProperties = {
 		name: existingEntry.name,
-		type: 'update',
+		type: 'updatable',
 		actual: {
 			name: existingEntry.name,
 			color: existingEntry.color,
@@ -80,6 +62,9 @@ const createUpdatableEntry = (
 	return updatableEntry;
 };
 
+/**
+ *  Mark label as `deletable`
+ */
 const createDeletableEntry = ({ name, color, description }: IssuesGetLabelResponse): diffEntryProperties => {
 	const existingEntry: diffEntryProperties = {
 		name,
@@ -95,6 +80,9 @@ const createDeletableEntry = ({ name, color, description }: IssuesGetLabelRespon
 	return existingEntry;
 };
 
+/**
+ *  Classify all labels & find differences
+ */
 const calcLabelDifference = (
 	currentLabels: IssuesGetLabelResponse[],
 	newLabels: IssuesGetLabelResponse[]
@@ -141,6 +129,30 @@ const calcLabelDifference = (
 	return diff;
 };
 
+/**
+ *  Iterate through labels & perform actions
+ */
+const syncLabelAction = (
+	apiClient: LabelsApiClient,
+	labels: IssuesGetLabelResponse[],
+	destRepo: string
+): Promise<boolean[]> => {
+	return Promise.all(
+		labels.map(
+			async (label): Promise<boolean> => {
+				try {
+					// ToDo: based on choice -> create or update
+					await apiClient.createLabel(destRepo, label);
+
+					return true;
+				} catch (err) {
+					return false;
+				}
+			}
+		)
+	);
+};
+
 export const syncRepositoryLabels = async ({
 	token,
 	sourceRepo,
@@ -158,7 +170,7 @@ export const syncRepositoryLabels = async ({
 		const oldLabels = await apiClient.getLabels(destRepo);
 		const newLabels = await apiClient.getLabels(sourceRepo);
 
-		calcLabelDifference(oldLabels, newLabels);
+		const labelDiff: diffEntryProperties[] = calcLabelDifference(oldLabels, newLabels);
 
 		fetchSpinner.succeed(`Fetched ${newLabels.length} labels from repository`);
 		// perform actions
