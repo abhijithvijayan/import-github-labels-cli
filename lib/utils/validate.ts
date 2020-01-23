@@ -5,7 +5,7 @@ export interface CliFlags {
 	v?: boolean;
 }
 
-const validateArguments: any = (_options: CliFlags) => {
+function validateArguments(_options: CliFlags): any {
 	if (
 		Object.prototype.hasOwnProperty.call(_options, 'version') ||
 		Object.prototype.hasOwnProperty.call(_options, 'v')
@@ -17,6 +17,6 @@ const validateArguments: any = (_options: CliFlags) => {
 	// return new Error('This is an error');
 
 	return null;
-};
+}
 
 export default validateArguments;

@@ -15,7 +15,7 @@ export const options: CliOptions = {};
 /**
  *  Handle `sync` command
  */
-const handleSyncOperations = async (): Promise<void> => {
+async function handleSyncOperations(): Promise<void> {
 	// ask questions
 	const userChoices: sessionAnswersType = await inquirer.prompt(sessionQuestions);
 	const { sourceRepo, destRepo, token, deleteExisting } = userChoices;
@@ -36,7 +36,7 @@ const handleSyncOperations = async (): Promise<void> => {
 		token: token.trim(),
 		deleteExisting,
 	});
-};
+}
 
 // driver function
 const importGithubLabels: any = (_options: CliFlags, userInputs: string[]) => {

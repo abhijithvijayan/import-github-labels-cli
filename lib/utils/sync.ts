@@ -14,7 +14,7 @@ interface diffEntryProperties {
 /**
  *  Mark label as `missing`
  */
-const createMissingEntry = ({ name, color, description, ...other }: IssuesGetLabelResponse): diffEntryProperties => {
+function createMissingEntry({ name, color, description, ...other }: IssuesGetLabelResponse): diffEntryProperties {
 	const missingEntry: diffEntryProperties = {
 		name,
 		type: 'missing',
@@ -28,15 +28,15 @@ const createMissingEntry = ({ name, color, description, ...other }: IssuesGetLab
 	};
 
 	return missingEntry;
-};
+}
 
 /**
  *  Mark label as `updatable`
  */
-const createUpdatableEntry = (
+function createUpdatableEntry(
 	existingEntry: IssuesGetLabelResponse,
 	newEntry: IssuesGetLabelResponse
-): diffEntryProperties => {
+): diffEntryProperties {
 	const { description: existingDesc, ...existing } = existingEntry;
 	const { description: newDesc, ...other } = newEntry;
 
@@ -54,12 +54,12 @@ const createUpdatableEntry = (
 	};
 
 	return updatableEntry;
-};
+}
 
 /**
  *  Mark label as `deletable`
  */
-const createDeletableEntry = ({ name, color, description, ...other }: IssuesGetLabelResponse): diffEntryProperties => {
+function createDeletableEntry({ name, color, description, ...other }: IssuesGetLabelResponse): diffEntryProperties {
 	const existingEntry: diffEntryProperties = {
 		name,
 		type: 'deletable',
@@ -73,15 +73,15 @@ const createDeletableEntry = ({ name, color, description, ...other }: IssuesGetL
 	};
 
 	return existingEntry;
-};
+}
 
 /**
  *  Classify all labels & find differences
  */
-const calcLabelDifference = (
+function calcLabelDifference(
 	currentLabels: IssuesGetLabelResponse[],
 	newLabels: IssuesGetLabelResponse[]
-): diffEntryProperties[] => {
+): diffEntryProperties[] {
 	const diff: diffEntryProperties[] = [];
 	const mutualLabels: IssuesGetLabelResponse[] = [];
 
@@ -122,16 +122,16 @@ const calcLabelDifference = (
 	});
 
 	return diff;
-};
+}
 
 /**
  *  Iterate through labels & perform actions
  */
-const syncLabelAction = (
+function syncLabelAction(
 	apiClient: LabelsApiClient,
 	diffLabels: diffEntryProperties[],
 	destRepo: string
-): Promise<boolean[]> => {
+): Promise<boolean[]> {
 	return Promise.all(
 		diffLabels.map(
 			async (diffEntry: diffEntryProperties): Promise<boolean> => {
@@ -151,14 +151,14 @@ const syncLabelAction = (
 			}
 		)
 	);
-};
+}
 
-export const syncRepositoryLabels = async ({
+export async function syncRepositoryLabels({
 	token,
 	sourceRepo,
 	destRepo,
 	deleteExisting,
-}: sessionAnswersType): Promise<null | Error> => {
+}: sessionAnswersType): Promise<null | Error> {
 	console.log();
 	const fetchSpinner = new Spinner('Fetching labels from GitHub');
 
@@ -193,4 +193,4 @@ export const syncRepositoryLabels = async ({
 		// failed to fetch labels
 		return err;
 	}
-};
+}
