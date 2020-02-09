@@ -1,4 +1,4 @@
-# import-github-labels-cli [![npm version](https://img.shields.io/npm/v/import-github-labels)](https://www.npmjs.com/package/import-github-labels) [![Build Status](https://travis-ci.com/abhijithvijayan/import-github-labels-cli.svg?token=bJxrXYoNqDthzrKNTKiz&branch=master)](https://travis-ci.com/abhijithvijayan/import-github-labels-cli)
+# import-github-labels-cli [![npm version](https://img.shields.io/npm/v/import-github-labels)](https://www.npmjs.com/package/import-github-labels) [![Build Status](https://travis-ci.com/abhijithvijayan/import-github-labels-cli.svg?branch=master)](https://travis-ci.com/abhijithvijayan/import-github-labels-cli)
 
 > CLI to import labels from another repository on GitHub
 
