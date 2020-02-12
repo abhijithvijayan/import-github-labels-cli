@@ -4,6 +4,7 @@
 		"outDir": "dist",
 		"target": "es2017", // Node.js 8
 		"module": "commonjs",
+    "esModuleInterop": true,
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"jsx": "react",
