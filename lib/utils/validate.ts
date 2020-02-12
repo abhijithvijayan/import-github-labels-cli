@@ -5,7 +5,7 @@ export interface CliFlags {
 	v?: boolean;
 }
 
-function validateArguments(_options: CliFlags): any {
+function validateArguments(_options: CliFlags): null {
 	if (
 		Object.prototype.hasOwnProperty.call(_options, 'version') ||
 		Object.prototype.hasOwnProperty.call(_options, 'v')

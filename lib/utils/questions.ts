@@ -1,13 +1,13 @@
 import { Question, Answers } from 'inquirer';
 
-export interface sessionAnswersType extends Answers {
+export interface SessionAnswersType extends Answers {
 	sourceRepo: string;
 	destRepo: string;
 	deleteExisting: boolean;
 	token: string;
 }
 
-const sessionQuestions: Question<sessionAnswersType>[] = [
+const sessionQuestions: Question<SessionAnswersType>[] = [
 	{
 		name: 'sourceRepo',
 		type: 'input',

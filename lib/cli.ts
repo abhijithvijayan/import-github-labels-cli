@@ -1,9 +1,13 @@
-import * as inquirer from 'inquirer';
+/**
+ *  @author abhijithvijayan <abhijithvijayan.in>
+ */
+
+import inquirer from 'inquirer';
 
 import { flashError } from './utils/flashMessages';
 import { syncRepositoryLabels } from './utils/sync';
 import validateArguments, { CliFlags } from './utils/validate';
-import { sessionQuestions, sessionAnswersType } from './utils/questions';
+import { sessionQuestions, SessionAnswersType } from './utils/questions';
 
 export interface CliOptions {
 	version?: boolean | undefined;
@@ -17,7 +21,7 @@ export const options: CliOptions = {};
  */
 async function handleSyncOperations(): Promise<void> {
 	// ask questions
-	const userChoices: sessionAnswersType = await inquirer.prompt(sessionQuestions);
+	const userChoices: SessionAnswersType = await inquirer.prompt(sessionQuestions);
 	const { sourceRepo, destRepo, token, deleteExisting } = userChoices;
 
 	if (sourceRepo.trim().split('/').length !== 2) {
@@ -39,7 +43,7 @@ async function handleSyncOperations(): Promise<void> {
 }
 
 // driver function
-const importGithubLabels: any = (_options: CliFlags, userInputs: string[]) => {
+const importGithubLabels = (_options: CliFlags, userInputs: string[]): void => {
 	const err: null | Error = validateArguments(_options);
 
 	if (err) {

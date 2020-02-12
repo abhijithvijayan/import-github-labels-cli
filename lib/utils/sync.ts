@@ -1,21 +1,26 @@
-import { IssuesGetLabelResponse } from '@octokit/rest';
+import { Octokit } from '@octokit/rest';
 
 import Spinner from './spinner';
-import { sessionAnswersType } from './questions';
+import { SessionAnswersType } from './questions';
 import githubLabelsApi, { LabelsApiClient } from '../githubLabelsApi';
 
-interface diffEntryProperties {
+interface DiffEntryProperties {
 	name: string;
 	type: string;
-	actual: IssuesGetLabelResponse | null;
-	expected: IssuesGetLabelResponse | null;
+	actual: Octokit.IssuesGetLabelResponse | null;
+	expected: Octokit.IssuesGetLabelResponse | null;
 }
 
 /**
  *  Mark label as `missing`
  */
-function createMissingEntry({ name, color, description, ...other }: IssuesGetLabelResponse): diffEntryProperties {
-	const missingEntry: diffEntryProperties = {
+function createMissingEntry({
+	name,
+	color,
+	description,
+	...other
+}: Octokit.IssuesGetLabelResponse): DiffEntryProperties {
+	const missingEntry: DiffEntryProperties = {
 		name,
 		type: 'missing',
 		actual: null,
@@ -34,13 +39,13 @@ function createMissingEntry({ name, color, description, ...other }: IssuesGetLab
  *  Mark label as `updatable`
  */
 function createUpdatableEntry(
-	existingEntry: IssuesGetLabelResponse,
-	newEntry: IssuesGetLabelResponse
-): diffEntryProperties {
+	existingEntry: Octokit.IssuesGetLabelResponse,
+	newEntry: Octokit.IssuesGetLabelResponse
+): DiffEntryProperties {
 	const { description: existingDesc, ...existing } = existingEntry;
 	const { description: newDesc, ...other } = newEntry;
 
-	const updatableEntry: diffEntryProperties = {
+	const updatableEntry: DiffEntryProperties = {
 		name: existingEntry.name,
 		type: 'updatable',
 		actual: {
@@ -59,8 +64,13 @@ function createUpdatableEntry(
 /**
  *  Mark label as `deletable`
  */
-function createDeletableEntry({ name, color, description, ...other }: IssuesGetLabelResponse): diffEntryProperties {
-	const existingEntry: diffEntryProperties = {
+function createDeletableEntry({
+	name,
+	color,
+	description,
+	...other
+}: Octokit.IssuesGetLabelResponse): DiffEntryProperties {
+	const existingEntry: DiffEntryProperties = {
 		name,
 		type: 'deletable',
 		actual: {
@@ -79,20 +89,21 @@ function createDeletableEntry({ name, color, description, ...other }: IssuesGetL
  *  Classify all labels & find differences
  */
 function calcLabelDifference(
-	currentLabels: IssuesGetLabelResponse[],
-	newLabels: IssuesGetLabelResponse[]
-): diffEntryProperties[] {
-	const diff: diffEntryProperties[] = [];
-	const mutualLabels: IssuesGetLabelResponse[] = [];
+	currentLabels: Octokit.IssuesGetLabelResponse[],
+	newLabels: Octokit.IssuesGetLabelResponse[]
+): DiffEntryProperties[] {
+	const diff: DiffEntryProperties[] = [];
+	const mutualLabels: Octokit.IssuesGetLabelResponse[] = [];
 
 	// compare new labels to old labels
-	newLabels.forEach((newLabel: IssuesGetLabelResponse): number | void => {
+	newLabels.forEach((newLabel: Octokit.IssuesGetLabelResponse): number | void => {
 		// Get current labels which match the new label
-		const matches = currentLabels.filter((currentLabel: IssuesGetLabelResponse): boolean | void => {
-			if (currentLabel.name.toLowerCase() === newLabel.name.toLowerCase()) {
-				return true;
+		// eslint-disable-next-line array-callback-return
+		const matches: Octokit.IssuesGetLabelResponse[] = currentLabels.filter(
+			(currentLabel: Octokit.IssuesGetLabelResponse): boolean => {
+				return currentLabel.name.toLowerCase() === newLabel.name.toLowerCase();
 			}
-		});
+		);
 
 		// If we have no matches, the new label is missing
 		if (matches.length === 0) {
@@ -114,10 +125,12 @@ function calcLabelDifference(
 	});
 
 	// find odd ones out (exists on dest repo but not on source repo)
-	const unMutualLabels: IssuesGetLabelResponse[] = currentLabels.filter((currentLabel: IssuesGetLabelResponse) => {
-		return mutualLabels.indexOf(currentLabel) === -1;
-	});
-	unMutualLabels.map((existingLabel: IssuesGetLabelResponse) => {
+	const unMutualLabels: Octokit.IssuesGetLabelResponse[] = currentLabels.filter(
+		(currentLabel: Octokit.IssuesGetLabelResponse) => {
+			return mutualLabels.indexOf(currentLabel) === -1;
+		}
+	);
+	unMutualLabels.map((existingLabel: Octokit.IssuesGetLabelResponse) => {
 		return diff.push(createDeletableEntry(existingLabel));
 	});
 
@@ -129,12 +142,12 @@ function calcLabelDifference(
  */
 function syncLabelAction(
 	apiClient: LabelsApiClient,
-	diffLabels: diffEntryProperties[],
+	diffLabels: DiffEntryProperties[],
 	destRepo: string
 ): Promise<boolean[]> {
 	return Promise.all(
 		diffLabels.map(
-			async (diffEntry: diffEntryProperties): Promise<boolean> => {
+			async (diffEntry: DiffEntryProperties): Promise<boolean> => {
 				try {
 					if (diffEntry.type === 'missing' && diffEntry.expected !== null) {
 						await apiClient.createLabel(destRepo, diffEntry.expected);
@@ -158,7 +171,7 @@ export async function syncRepositoryLabels({
 	sourceRepo,
 	destRepo,
 	deleteExisting,
-}: sessionAnswersType): Promise<null | Error> {
+}: SessionAnswersType): Promise<null | Error> {
 	console.log();
 	const fetchSpinner = new Spinner('Fetching labels from GitHub');
 
@@ -168,12 +181,12 @@ export async function syncRepositoryLabels({
 
 		fetchSpinner.start();
 		// get all labels
-		const oldLabels = await apiClient.getLabels(destRepo);
-		const newLabels = await apiClient.getLabels(sourceRepo);
+		const oldLabels: Octokit.IssuesGetLabelResponse[] = await apiClient.getLabels(destRepo);
+		const newLabels: Octokit.IssuesGetLabelResponse[] = await apiClient.getLabels(sourceRepo);
 
 		// calculate the differences
-		const labelDiff: diffEntryProperties[] = calcLabelDifference(oldLabels, newLabels).filter(
-			(diff: diffEntryProperties) => {
+		const labelDiff: DiffEntryProperties[] = calcLabelDifference(oldLabels, newLabels).filter(
+			(diff: DiffEntryProperties): boolean => {
 				// ignore deletable entries if user opted to keep them
 				if (!deleteExisting && diff.type === 'deletable') {
 					return false;
@@ -182,15 +195,15 @@ export async function syncRepositoryLabels({
 				return true;
 			}
 		);
-
 		fetchSpinner.succeed(`Fetched ${newLabels.length} labels from repository`);
+
 		// perform actions
 		await syncLabelAction(apiClient, labelDiff, destRepo);
 
 		return null;
 	} catch (err) {
 		fetchSpinner.fail('Failed to fetch labels');
-		// failed to fetch labels
+
 		return err;
 	}
 }

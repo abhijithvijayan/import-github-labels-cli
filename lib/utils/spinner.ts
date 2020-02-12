@@ -1,4 +1,4 @@
-import * as ora from 'ora';
+import ora from 'ora';
 
 class Spinner {
 	_text: string;
@@ -10,23 +10,23 @@ class Spinner {
 		this._spinner = ora(this._text);
 	}
 
-	start() {
+	start(): void {
 		this._spinner.start();
 	}
 
-	info(text: string) {
+	info(text: string): void {
 		this._spinner.info(text);
 	}
 
-	succeed(text: string) {
+	succeed(text: string): void {
 		this._spinner.succeed(text);
 	}
 
-	fail(text: string) {
+	fail(text: string): void {
 		this._spinner.fail(text);
 	}
 
-	stop() {
+	stop(): void {
 		this._spinner.stop();
 	}
 }
