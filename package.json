@@ -1,6 +1,6 @@
 {
 	"name": "import-github-labels",
-	"version": "1.1.1",
+	"version": "1.2.0",
 	"description": "CLI to import labels from another repository on GitHub",
 	"license": "MIT",
 	"repository": "https://github.com/abhijithvijayan/import-github-labels-cli.git",
