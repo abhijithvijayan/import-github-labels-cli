@@ -11,7 +11,8 @@
 	},
 	"bin": "./dist/index.js",
 	"files": [
-		"/dist"
+		"/dist",
+		"demo.gif"
 	],
 	"engines": {
 		"node": ">=10"
