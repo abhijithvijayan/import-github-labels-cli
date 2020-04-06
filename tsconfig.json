@@ -1,10 +1,10 @@
 {
-  "compilerOptions": {
-    // https://github.com/Microsoft/TypeScript/issues/29172
+	"compilerOptions": {
+		// https://github.com/Microsoft/TypeScript/issues/29172
 		"outDir": "dist",
 		"target": "es2017", // Node.js 8
 		"module": "commonjs",
-    "esModuleInterop": true,
+		"esModuleInterop": true,
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"jsx": "react",
@@ -21,11 +21,11 @@
 		"useDefineForClassFields": true,
 		"forceConsistentCasingInFileNames": true,
 		"skipLibCheck": true
-  },
-  "include": [
-    "app/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+	},
+	"include": [
+		"app/**/*.ts"
+	],
+	"exclude": [
+		"node_modules"
+	]
 }

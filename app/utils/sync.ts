@@ -137,6 +137,11 @@ function calcLabelDifference(
 	return diff;
 }
 
+type SyncActionResultProps = {
+	type: string;
+	status: boolean;
+};
+
 /**
  *  Iterate through labels & perform actions
  */
@@ -144,10 +149,10 @@ function syncLabelAction(
 	apiClient: LabelsApiClient,
 	diffLabels: DiffEntryProperties[],
 	destRepo: string
-): Promise<boolean[]> {
+): Promise<SyncActionResultProps[]> {
 	return Promise.all(
 		diffLabels.map(
-			async (diffEntry: DiffEntryProperties): Promise<boolean> => {
+			async (diffEntry: DiffEntryProperties): Promise<SyncActionResultProps> => {
 				try {
 					if (diffEntry.type === 'missing' && diffEntry.expected !== null) {
 						await apiClient.createLabel(destRepo, diffEntry.expected);
@@ -157,9 +162,9 @@ function syncLabelAction(
 						await apiClient.deleteLabel(destRepo, diffEntry.actual);
 					}
 
-					return true;
+					return { type: diffEntry.type, status: true };
 				} catch (err) {
-					return false;
+					return { type: diffEntry.type, status: false };
 				}
 			}
 		)
@@ -173,7 +178,7 @@ export async function syncRepositoryLabels({
 	deleteExisting,
 }: SessionAnswersType): Promise<null | Error> {
 	console.log();
-	const fetchSpinner = new Spinner('Fetching labels from GitHub');
+	const fetchSpinner = new Spinner('Fetching labels from GitHub...');
 
 	try {
 		// create github api instance
@@ -195,14 +200,36 @@ export async function syncRepositoryLabels({
 				return true;
 			}
 		);
-		fetchSpinner.succeed(`Fetched ${newLabels.length} labels from repository`);
 
-		// perform actions
-		await syncLabelAction(apiClient, labelDiff, destRepo);
+		fetchSpinner.succeed(`Fetched ${newLabels.length} labels from source repository`);
+		fetchSpinner.start(`Syncing GitHub issue labels. Please wait...`);
+
+		// perform create/update/delete actions
+		const syncStatus: SyncActionResultProps[] = await syncLabelAction(apiClient, labelDiff, destRepo);
+
+		let created = 0;
+		let updated = 0;
+		let deleted = 0;
+		const successCount: number = syncStatus.filter(({ type, status }: SyncActionResultProps): boolean => {
+			if (status) {
+				if (type === 'missing') {
+					created += 1;
+				} else if (type === 'updatable') {
+					updated += 1;
+				} else if (type === 'deletable') {
+					deleted += 1;
+				}
+			}
+
+			return status && (type === 'missing' || type === 'updatable' || type === 'deletable');
+		}).length;
+
+		fetchSpinner.succeed(`Sync complete. ${successCount} successful, ${labelDiff.length - successCount} failed.`);
+		fetchSpinner.succeed(`Created: ${created}, Updated: ${updated}, Deleted: ${deleted}`);
 
 		return null;
 	} catch (err) {
-		fetchSpinner.fail('Failed to fetch labels');
+		fetchSpinner.fail('Failed to sync labels');
 
 		return err;
 	}
