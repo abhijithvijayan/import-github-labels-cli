@@ -10,8 +10,8 @@ class Spinner {
 		this._spinner = ora(this._text);
 	}
 
-	start(): void {
-		this._spinner.start();
+	start(text?: string): void {
+		this._spinner.start(text);
 	}
 
 	info(text: string): void {
@@ -28,6 +28,14 @@ class Spinner {
 
 	stop(): void {
 		this._spinner.stop();
+	}
+
+	stopAndPersist({ text, symbol, prefixText }: ora.PersistOptions): void {
+		this._spinner.stopAndPersist({
+			...(text && { text }),
+			...(symbol && { symbol }),
+			...(prefixText && { prefixText }),
+		});
 	}
 }
 
