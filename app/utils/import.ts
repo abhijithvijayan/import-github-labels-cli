@@ -1,17 +1,13 @@
 import inquirer from 'inquirer';
 
-import { flashError } from './utils/flashMessages';
-import { syncRepositoryLabels } from './utils/sync';
-import { sessionQuestions, SessionAnswersType } from './utils/questions';
-
-type CliFlagsProps = {
-	version?: boolean | undefined;
-};
+import { flashError } from './flashMessages';
+import { syncRepositoryLabels } from './sync';
+import { sessionQuestions, SessionAnswersType } from './questions';
 
 /**
  *  Handle `sync` command
  */
-async function handleSyncOperations(): Promise<void> {
+async function importGitHubLabels(): Promise<void> {
 	// ask questions
 	const userChoices: SessionAnswersType = await inquirer.prompt(sessionQuestions);
 	const { sourceRepo, destRepo, token, deleteExisting } = userChoices;
@@ -19,9 +15,11 @@ async function handleSyncOperations(): Promise<void> {
 	if (sourceRepo.trim().split('/').length !== 2) {
 		return flashError('Error: Invalid source repository name.');
 	}
+
 	if (destRepo.trim().split('/').length !== 2) {
 		return flashError('Error: Invalid destination repository name.');
 	}
+
 	if (token.trim() === '') {
 		return flashError('Error: Invalid GitHub token.');
 	}
@@ -33,18 +31,5 @@ async function handleSyncOperations(): Promise<void> {
 		deleteExisting,
 	});
 }
-
-const importGitHubLabels = (_options: CliFlagsProps, userInputs: string[]): void => {
-	// get user input command
-	const userCommand = userInputs[0];
-
-	if (!userCommand || userCommand !== 'sync') {
-		return flashError('Error: Unknown input fields. Please provide a valid argument.');
-	}
-
-	if (userCommand === 'sync') {
-		handleSyncOperations();
-	}
-};
 
 export default importGitHubLabels;
