@@ -9,18 +9,20 @@
 		"email": "34790378+abhijithvijayan@users.noreply.github.com",
 		"url": "https://abhijithvijayan.in"
 	},
-	"bin": "./dist/index.js",
-	"files": [
-		"/dist",
-		"demo.gif"
-	],
 	"engines": {
 		"node": ">=10.0.0"
 	},
+	"main": "dist/app",
+	"types": "dist/app",
+	"files": [
+		"dist/app",
+		"demo.gif"
+	],
 	"scripts": {
-		"build": "tsc",
-		"release": "yarn build && npm publish",
 		"dev": "tsc --watch",
+		"build": "tsc",
+		"pack:list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
+		"prepublishOnly": "yarn build",
 		"lint": "eslint . --ext .js,.ts",
 		"lint:fix": "eslint . --ext .js,.ts --fix"
 	},
