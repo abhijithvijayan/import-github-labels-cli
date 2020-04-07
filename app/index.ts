@@ -1,31 +1,13 @@
 #!/usr/bin/env node
 
-import meow from 'meow';
-import importGitHubLabelsCLI from './cli';
+/**
+ *  @author abhijithvijayan <abhijithvijayan.in>
+ */
 
-const cli = meow(
-	`
-	Usage
-	  $ import-github-labels <input> [options]
+import cli from './cli';
+import importGitHubLabels from './import';
 
-	Input
-		sync		Import GitHub labels from a repo to another
-
-	Options
-		-v, --version   Show the version and exit with code 0
-
-  Examples
-		$ import-github-labels sync
-`,
-	{
-		flags: {
-			version: {
-				type: 'boolean',
-				alias: 'v',
-			},
-		},
-	}
-);
-
-// initialize CLI
-importGitHubLabelsCLI(cli.flags, cli.input);
+((): void => {
+	// initialize CLI
+	importGitHubLabels(cli.flags, cli.input);
+})();
