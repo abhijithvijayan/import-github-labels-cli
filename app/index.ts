@@ -5,10 +5,12 @@
  */
 
 import cli from './cli';
+import init from './init';
 import importGitHubLabels from './utils/import';
 import { flashError } from './utils/flashMessages';
 
 ((): void => {
+	init();
 	// get user input command
 	const [input] = cli.input;
 
