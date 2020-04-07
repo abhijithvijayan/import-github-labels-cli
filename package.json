@@ -12,10 +12,12 @@
 	"engines": {
 		"node": ">=10.0.0"
 	},
-	"main": "dist/app",
-	"types": "dist/app",
+	"bin": {
+		"import-github-labels": "dist/source"
+	},
+	"types": "dist/source",
 	"files": [
-		"dist/app",
+		"dist/source",
 		"demo.gif"
 	],
 	"scripts": {
