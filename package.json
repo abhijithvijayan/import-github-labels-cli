@@ -54,6 +54,7 @@
 		"update-notifier": "^4.1.0"
 	},
 	"devDependencies": {
+		"@abhijithvijayan/tsconfig": "^1.1.2",
 		"@types/inquirer": "^6.5.0",
 		"@types/node": "^13.11.0",
 		"@types/update-notifier": "^4.1.0",
