@@ -1,6 +1,6 @@
 {
 	"name": "import-github-labels",
-	"version": "1.4.1",
+	"version": "1.4.2",
 	"description": "CLI to import labels from another repository on GitHub",
 	"license": "MIT",
 	"repository": "https://github.com/abhijithvijayan/import-github-labels-cli.git",
@@ -13,11 +13,11 @@
 		"node": ">=10.0.0"
 	},
 	"bin": {
-		"import-github-labels": "dist/source"
+		"import-github-labels": "./dist"
 	},
-	"types": "dist/source",
+	"types": "dist",
 	"files": [
-		"dist/source",
+		"/dist",
 		"demo.gif"
 	],
 	"scripts": {

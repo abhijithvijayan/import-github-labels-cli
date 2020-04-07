@@ -9,7 +9,7 @@ import init from './init';
 import importGitHubLabels from './utils/import';
 import { flashError } from './utils/flashMessages';
 
-((): void => {
+(async (): Promise<void> => {
 	init();
 	// get user input command
 	const [input] = cli.input;
@@ -18,5 +18,5 @@ import { flashError } from './utils/flashMessages';
 		return flashError('Error: Unknown input fields. Please provide a valid argument.');
 	}
 
-	importGitHubLabels();
+	await importGitHubLabels();
 })();
