@@ -46,7 +46,7 @@
 		"cli-app"
 	],
 	"dependencies": {
-		"@octokit/rest": "16.43.1",
+		"@octokit/rest": "17.2.1",
 		"chalk": "^4.0.0",
 		"inquirer": "^7.1.0",
 		"meow": "^6.1.0",
