@@ -102,8 +102,6 @@ export class LabelsApiClient {
 	}
 }
 
-const createApiClient = (accessToken: string): LabelsApiClient => {
-	return new LabelsApiClient(accessToken);
-};
+const createApiClient = (accessToken: string): LabelsApiClient => new LabelsApiClient(accessToken);
 
 export default createApiClient;

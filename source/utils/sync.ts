@@ -100,9 +100,8 @@ function calcLabelDifference(
 		// Get current labels which match the new label
 		// eslint-disable-next-line array-callback-return
 		const matches: Octokit.IssuesGetLabelResponse[] = currentLabels.filter(
-			(currentLabel: Octokit.IssuesGetLabelResponse): boolean => {
-				return currentLabel.name.toLowerCase() === newLabel.name.toLowerCase();
-			}
+			(currentLabel: Octokit.IssuesGetLabelResponse): boolean =>
+				currentLabel.name.toLowerCase() === newLabel.name.toLowerCase()
 		);
 
 		// If we have no matches, the new label is missing
@@ -126,13 +125,11 @@ function calcLabelDifference(
 
 	// find odd ones out (exists on dest repo but not on source repo)
 	const unMutualLabels: Octokit.IssuesGetLabelResponse[] = currentLabels.filter(
-		(currentLabel: Octokit.IssuesGetLabelResponse) => {
-			return mutualLabels.indexOf(currentLabel) === -1;
-		}
+		(currentLabel: Octokit.IssuesGetLabelResponse) => mutualLabels.indexOf(currentLabel) === -1
 	);
-	unMutualLabels.map((existingLabel: Octokit.IssuesGetLabelResponse) => {
-		return diff.push(createDeletableEntry(existingLabel));
-	});
+	unMutualLabels.map((existingLabel: Octokit.IssuesGetLabelResponse) =>
+		diff.push(createDeletableEntry(existingLabel))
+	);
 
 	return diff;
 }
