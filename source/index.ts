@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 
 /**
- *  @author abhijithvijayan <abhijithvijayan.in>
+ *  import-github-labels
+ *
+ *  @author   abhijithvijayan <abhijithvijayan.in>
+ *  @license  MIT License
  */
 
 import cli from './cli';

@@ -1,5 +1,5 @@
 <h1 align="center">import-github-labels-cli</h1>
-<p align="center">CLI to import labels from another repository on GitHub</p>
+<p align="center">CLI to sync labels between repositories on GitHub</p>
 <div align="center">
   <a href="https://www.npmjs.com/package/import-github-labels">
     <img src="https://img.shields.io/npm/v/import-github-labels" alt="NPM" />
