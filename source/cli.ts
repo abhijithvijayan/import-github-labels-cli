@@ -1,7 +1,7 @@
 import meow from 'meow';
 
 const cli = meow(
-	`
+  `
 	Usage
 	  $ import-github-labels <input> [options]
 
@@ -14,14 +14,14 @@ const cli = meow(
   Examples
 		$ import-github-labels sync
 `,
-	{
-		flags: {
-			version: {
-				type: 'boolean',
-				alias: 'v',
-			},
-		},
-	}
+  {
+    flags: {
+      version: {
+        type: 'boolean',
+        alias: 'v',
+      },
+    },
+  }
 );
 
 export default cli;
