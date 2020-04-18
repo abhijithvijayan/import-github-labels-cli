@@ -20,7 +20,7 @@
 	],
 	"scripts": {
 		"dev": "tsc --watch",
-		"build": "tsc",
+		"build": "rimraf dist && tsc",
 		"pack:list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
 		"prepublishOnly": "yarn build",
 		"lint": "eslint . --ext .ts",
@@ -74,6 +74,7 @@
 		"husky": "^4.2.3",
 		"lint-staged": "^10.1.2",
 		"prettier": "^2.0.4",
+		"rimraf": "^3.0.2",
 		"typescript": "^3.8.3"
 	}
 }
