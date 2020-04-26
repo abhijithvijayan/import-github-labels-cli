@@ -1,8 +1,8 @@
 import inquirer from 'inquirer';
 
-import {flashError} from './flashMessages';
-import {syncRepositoryLabels} from './sync';
-import {sessionQuestions, SessionAnswersType} from './questions';
+import {flashError} from '../shared/flashMessages';
+import {syncRepositoryLabels} from './import/sync';
+import {sessionQuestions, SessionAnswersType} from './shared/questions';
 
 /**
  *  Handle `sync` command

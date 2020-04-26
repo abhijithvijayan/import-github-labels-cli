@@ -7,10 +7,10 @@
  *  @license  MIT License
  */
 
-import cli from './cli';
-import init from './init';
-import importGitHubLabels from './utils/import';
-import {flashError} from './utils/flashMessages';
+import cli from './index/cli';
+import init from './index/init';
+import importGitHubLabels from './index/import';
+import {flashError} from './shared/flashMessages';
 
 (async (): Promise<void> => {
   init();

@@ -1,8 +1,8 @@
 import {Octokit} from '@octokit/rest';
 
-import Spinner from './spinner';
-import {SessionAnswersType} from './questions';
-import githubLabelsApi, {LabelsApiClient} from '../githubLabelsApi';
+import Spinner from './sync/spinner';
+import {SessionAnswersType} from '../shared/questions';
+import githubLabelsApi, {LabelsApiClient} from './sync/githubLabelsApi';
 
 interface DiffEntryProperties {
   name: string;

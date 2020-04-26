@@ -8,8 +8,8 @@
     <img src="https://travis-ci.com/abhijithvijayan/import-github-labels-cli.svg?branch=master" alt="Travis Build" />
   </a>
   </a>
-  <a href="https://david-dm.org/abhijithvijayan/import-github-labels-cli">
-    <img src="https://img.shields.io/david/abhijithvijayan/import-github-labels-cli.svg?colorB=orange" alt="DEPENDENCIES" />
+  <a href="https://github.com/benawad/destiny">
+    <img src="https://img.shields.io/badge/file%20structure-destiny-7a49ff?style=flat" alt="FILE STRUCTURE: destiny" />
   </a>
   <a href="https://github.com/abhijithvijayan/import-github-labels-cli/blob/master/license">
     <img src="https://img.shields.io/github/license/abhijithvijayan/import-github-labels-cli.svg" alt="LICENSE" />
