@@ -50,7 +50,7 @@
 		"chalk": "^4.0.0",
 		"emoji-log": "^1.0.2",
 		"inquirer": "^7.1.0",
-		"meow": "^6.1.0",
+		"meow": "^7.0.0",
 		"ora": "^4.0.3",
 		"update-notifier": "^4.1.0"
 	},
