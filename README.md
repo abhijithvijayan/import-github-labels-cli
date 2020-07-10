@@ -1,20 +1,23 @@
-<h1 align="center">import-github-labels-cli</h1>
+<h1 align="center">import-github-labels</h1>
 <p align="center">CLI to sync labels between repositories on GitHub</p>
 <div align="center">
   <a href="https://www.npmjs.com/package/import-github-labels">
     <img src="https://img.shields.io/npm/v/import-github-labels" alt="NPM" />
   </a>
-  <a href="https://travis-ci.com/github/abhijithvijayan/import-github-labels-cli">
-    <img src="https://travis-ci.com/abhijithvijayan/import-github-labels-cli.svg?branch=master" alt="Travis Build" />
+  <a href="https://travis-ci.com/abhijithvijayan/import-github-labels-cli">
+    <img src="https://travis-ci.com/abhijithvijayan/import-github-labels-cli.svg?branch=main" alt="Travis Build" />
   </a>
   </a>
-  <a href="https://github.com/benawad/destiny">
+  <a href="https://david-dm.org/abhijithvijayan/import-github-labels-cli">
+    <img src="https://img.shields.io/david/abhijithvijayan/import-github-labels-cli.svg?colorB=orange" alt="DEPENDENCIES" />
+  </a>
+    <a href="https://github.com/benawad/destiny">
     <img src="https://img.shields.io/badge/file%20structure-destiny-7a49ff?style=flat" alt="FILE STRUCTURE: destiny" />
   </a>
-  <a href="https://github.com/abhijithvijayan/import-github-labels-cli/blob/master/license">
+  <a href="https://github.com/abhijithvijayan/import-github-labels-cli/blob/main/license">
     <img src="https://img.shields.io/github/license/abhijithvijayan/import-github-labels-cli.svg" alt="LICENSE" />
   </a>
-  <a href="https://twitter.com/intent/tweet?text=Check%20out%20import-github-labels%21%20by%20%40_abhijithv%0A%0AMy%20awesome%20command-line%20tool%0Ahttps%3A%2F%2Fgithub.com%2Fabhijithvijayan%2Fimport-github-labels%0A%0A%23node%20%23javascript%20%23typescript%20%23cli%20%23npm">
+  <a href="https://twitter.com/intent/tweet?text=Check%20out%20import-github-labels%21%20by%20%40_abhijithv%0A%0ACLI%20to%20sync%20labels%20between%20repositories%20on%20GitHub%0Ahttps%3A%2F%2Fgithub.com%2Fabhijithvijayan%2Fimport-github-labels%0A%0A%23github%20%23labels%20%23sync%20%23cli%20%23node%20%23typescript">
      <img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=social" alt="TWEET" />
   </a>
 </div>
@@ -31,7 +34,7 @@
 </p>
 <hr />
 
-❤️ it? ⭐️ it on [GitHub](https://github.com/abhijithvijayan/import-github-labels/stargazers)
+❤️ it? ⭐️ it on [GitHub](https://github.com/abhijithvijayan/import-github-labels-cli/stargazers) or [Tweet](https://twitter.com/intent/tweet?text=Check%20out%20import-github-labels%21%20by%20%40_abhijithv%0A%0ACLI%20to%20sync%20labels%20between%20repositories%20on%20GitHub%0Ahttps%3A%2F%2Fgithub.com%2Fabhijithvijayan%2Fimport-github-labels%0A%0A%23github%20%23labels%20%23sync%20%23cli%20%23node%20%23typescript) about it.
 
 <img src="demo.gif" width="752">
 
@@ -39,9 +42,7 @@
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [FAQ](#faq)
-  - [Generate new token](#generate-new-token)
-  - [Why do I need a token](#why-do-I-need-a-token)
+- [FAQs](#faqs)
 - [Issues](#issues)
   - [🐛 Bugs](#-bugs)
 - [LICENSE](#license)
@@ -72,7 +73,7 @@ $ import-github-labels --help
 
   Input
     sync            Import GitHub labels from a repo to another
-  
+
   Options
     -v, --version   Show the version and exit with code 0
 
@@ -80,7 +81,7 @@ $ import-github-labels --help
     $ import-github-labels sync
 ```
 
-## FAQ
+## FAQs
 
 ### Generate new token
 
@@ -95,14 +96,19 @@ Go to [Personal access tokens](https://github.com/settings/tokens)
 
 ## Issues
 
-_Looking to contribute? Look for the [Good First Issue](https://github.com/abhijithvijayan/import-github-labels/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22good+first+issue%22)
+_Looking to contribute? Look for the [Good First Issue](https://github.com/abhijithvijayan/import-github-labels-cli/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22good+first+issue%22)
 label._
 
 ### 🐛 Bugs
 
-Please file an issue [here](https://github.com/abhijithvijayan/import-github-labels/issues/new) for bugs, missing documentation, or unexpected behavior.
+Please file an issue [here](https://github.com/abhijithvijayan/import-github-labels-cli/issues/new) for bugs, missing documentation, or unexpected behavior.
 
-[**See Bugs**](https://github.com/abhijithvijayan/import-github-labels/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22type%3A+bug%22)
+[**See Bugs**](https://github.com/abhijithvijayan/import-github-labels-cli/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22type%3A+bug%22)
+
+### Linting & TypeScript Config
+
+- Shared Eslint & Prettier Configuration - [`@abhijithvijayan/eslint-config`](https://www.npmjs.com/package/@abhijithvijayan/eslint-config)
+- Shared TypeScript Configuration - [`@abhijithvijayan/tsconfig`](https://www.npmjs.com/package/@abhijithvijayan/tsconfig)
 
 ## License
 
