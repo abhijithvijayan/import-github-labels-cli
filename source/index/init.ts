@@ -2,7 +2,7 @@
 
 // import pkgJSON from '../package.json';
 
-export default (): void => {
+const notifier = (): void => {
   // updateNotifier({
   // 	// pkg: pkgJSON,
   // 	shouldNotifyInNpmScript: true,
@@ -11,3 +11,5 @@ export default (): void => {
   // 	isGlobal: true,
   // });
 };
+
+export default notifier;

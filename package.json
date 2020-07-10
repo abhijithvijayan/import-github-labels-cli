@@ -6,7 +6,7 @@
 	"repository": "https://github.com/abhijithvijayan/import-github-labels-cli.git",
 	"author": {
 		"name": "abhijithvijayan",
-		"email": "34790378+abhijithvijayan@users.noreply.github.com",
+		"email": "email@abhijithvijayan.in",
 		"url": "https://abhijithvijayan.in"
 	},
 	"engines": {
@@ -46,35 +46,36 @@
 		"cli-app"
 	],
 	"dependencies": {
-		"@octokit/rest": "16.43.1",
-		"chalk": "^4.0.0",
+		"@octokit/rest": "^16.43.2",
+		"chalk": "^4.1.0",
 		"emoji-log": "^1.0.2",
-		"inquirer": "^7.1.0",
-		"meow": "^6.1.0",
-		"ora": "^4.0.3",
+		"inquirer": "^7.3.0",
+		"meow": "^6.1.1",
+		"ora": "^4.0.4",
 		"update-notifier": "^4.1.0"
 	},
 	"devDependencies": {
-		"@abhijithvijayan/eslint-config": "1.3.1",
-		"@abhijithvijayan/tsconfig": "^1.1.2",
+		"@abhijithvijayan/eslint-config": "2.5.4",
+		"@abhijithvijayan/eslint-config-airbnb": "^1.0.2",
+		"@abhijithvijayan/tsconfig": "^1.2.0",
 		"@types/inquirer": "^6.5.0",
-		"@types/node": "^14.0.11",
+		"@types/node": "^14.0.20",
 		"@types/update-notifier": "^4.1.0",
-		"@typescript-eslint/eslint-plugin": "^2.28.0",
-		"@typescript-eslint/parser": "^2.28.0",
+		"@typescript-eslint/eslint-plugin": "^3.5.0",
+		"@typescript-eslint/parser": "^3.5.0",
 		"babel-eslint": "^10.1.0",
-		"eslint": "^6.8.0",
-		"eslint-config-airbnb": "^18.1.0",
-		"eslint-config-prettier": "^6.10.1",
-		"eslint-plugin-import": "^2.20.2",
-		"eslint-plugin-jsx-a11y": "^6.2.3",
-		"eslint-plugin-prettier": "^3.1.3",
-		"eslint-plugin-react": "^7.19.0",
-		"eslint-plugin-react-hooks": "^2.5.1",
-		"husky": "^4.2.3",
-		"lint-staged": "^10.1.2",
-		"prettier": "^2.0.4",
+		"eslint": "^7.4.0",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-import": "^2.22.0",
+		"eslint-plugin-jsx-a11y": "^6.3.1",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-prettier": "^3.1.4",
+		"eslint-plugin-react": "^7.20.3",
+		"eslint-plugin-react-hooks": "^4.0.5",
+		"husky": "^4.2.5",
+		"lint-staged": "^10.2.11",
+		"prettier": "^2.0.5",
 		"rimraf": "^3.0.2",
-		"typescript": "^3.8.3"
+		"typescript": "^3.9.6"
 	}
 }

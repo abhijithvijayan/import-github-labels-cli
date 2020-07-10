@@ -1,10 +1,19 @@
 {
 	"extends": [
-		"@abhijithvijayan/eslint-config/typescript"
+		"@abhijithvijayan/eslint-config/typescript",
+		"@abhijithvijayan/eslint-config/node"
 	],
+	"parserOptions": {
+		"project": "./tsconfig.json",
+		"sourceType": "module"
+	},
 	"rules": {
-		"no-console": 0,
-		"no-extend-native": 0,
-		"@typescript-eslint/camelcase": 0
+		"no-console": "off",
+		"node/shebang": "off",
+		"no-process-exit": "off",
+		"consistent-return": "warn",
+		"node/no-unsupported-features/es-syntax": ["error", {
+			"ignores": ["modules"]
+		}]
 	}
 }
